@@ -1,17 +1,36 @@
 const path = require('path');
 const publicPath = path.join(__dirname, '../public');
 const express = require('express');
+const http = require('http');
+const socketIO = require('socket.io');
 
 // console.log(__dirname + '/../public' );
 // console.log(publicPath)
 
 var app = express();
+//o createServer recebe um callback de argumento
+//esse callback eh compativel com a variavel app criada acima
+//a partir do expressa, entao substituimos o trecho abaixo
+//pelo que segue
+// var server = http.createServer((req, res) => {
+//});
+
+var server = http.createServer(app);
+var io = socketIO(server);
+
 app.use(express.static(publicPath));
 //configura a rota
+io.on('connection', (socket) => {
+  console.log('new user connected');
+
+  socket.on('disconnect', () => {
+    console.log('client desconectado do servidor');
+  });
+});
 
 const port = process.env.PORT || 3000;
 
-app.listen(port, () => {
+server.listen(port, () => {
     console.log('Started on port ', port);
 });
 
