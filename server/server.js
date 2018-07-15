@@ -32,13 +32,28 @@ io.on('connection', (socket) => {
   //   msg:_msg.msg,
   //   createdAt: new Date
   // });
-  socket.on('createMessage', (_msg) => {
+  socket.emit('newMessage', {
+    from:'Admin',
+    msg:'Bem-vindo ao app de chat'
+  });
 
+  socket.broadcast.emit('newMessage', {
+    from:'Admin',
+    msg:'Novo usuario conectado',
+    createdAt: new Date
+  });  
+  socket.on('createMessage', (_msg) => {
+ 
     io.emit('newMessage', {
       msg:_msg.msg,
       createdAt: new Date
     });
-    
+
+    //EMITE PARA TODOS MENOS PARA O SOCKET CHAMADOR
+    // socket.broadcast.emit('newMessage', {
+    //   msg:_msg.msg,
+    //   createdAt: new Date
+    // });    
   });
 
   socket.on('createEmail', (newEmail) => {
