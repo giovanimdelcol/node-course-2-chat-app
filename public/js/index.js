@@ -9,9 +9,9 @@ socket.on('connect', function ()  {
         text:'this is sparta!'
     });
 
-    socket.emit('createMessage', {
-        msg:'Mensagem de texto'
-    });
+    // socket.emit('createMessage', {
+    //     msg:'Mensagem de texto'
+    // });
 }); 
 
 socket.on('disconnect', function () {

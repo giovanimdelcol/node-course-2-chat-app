@@ -28,9 +28,13 @@ io.on('connection', (socket) => {
     city:'Brags'
   });
 
+  // socket.emit('newMessage', {
+  //   msg:_msg.msg,
+  //   createdAt: new Date
+  // });
   socket.on('createMessage', (_msg) => {
 
-    socket.emit('newMessage', {
+    io.emit('newMessage', {
       msg:_msg.msg,
       createdAt: new Date
     });
