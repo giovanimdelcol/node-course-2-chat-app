@@ -20,8 +20,29 @@ socket.on('disconnect', function () {
 
 socket.on('newMessage', function (msg) {
   console.log('got new message:', msg);
+  var li = jQuery('<li></li>');
+  li.text(`${msg.from}: ${msg.text}`);
+  jQuery('#messages').append(li);
 });
 
 socket.on('newEmail', function (email) {
     console.log('New Email', email);
+});
+
+// socket.emit('createMessage',{
+//     from: 'Frank',
+//     text:'Hi'
+// }, function(data) {
+//     console.log('Got it > ', data);
+// });
+
+jQuery('#message-form').on('submit', function (e) {
+    e.preventDefault();//impede o default do botao de recarrregar a pagina
+
+    socket.emit('createMessage', {
+        from: 'User',
+        text: $('[name=message]').val()
+    }, function () {
+
+    });
 });

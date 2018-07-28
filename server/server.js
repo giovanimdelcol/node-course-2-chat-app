@@ -36,11 +36,11 @@ io.on('connection', (socket) => {
   socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chat app'));
 
   socket.broadcast.emit('newMessage', generateMessage('Admin', 'New User Joined'));  
-  socket.on('createMessage', (_msg) => {
+  socket.on('createMessage', (_msg, _callback) => {
  
-    io.emit('newMessage', generateMessage(message.from, message.text));
-
-    //EMITE PARA TODOS MENOS PARA O SOCKET CHAMADOR
+    io.emit('newMessage', generateMessage(_msg.from, _msg.text));
+    _callback('This is event Acknowledgment from the server');
+    //BROADCAST EMITE PARA TODOS MENOS PARA O SOCKET CHAMADOR
     // socket.broadcast.emit('newMessage', {
     //   msg:_msg.msg,
     //   createdAt: new Date
