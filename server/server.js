@@ -39,7 +39,7 @@ io.on('connection', (socket) => {
   socket.on('createMessage', (_msg, _callback) => {
  
     io.emit('newMessage', generateMessage(_msg.from, _msg.text));
-    _callback('This is event Acknowledgment from the server');
+    _callback();
     //BROADCAST EMITE PARA TODOS MENOS PARA O SOCKET CHAMADOR
     // socket.broadcast.emit('newMessage', {
     //   msg:_msg.msg,
