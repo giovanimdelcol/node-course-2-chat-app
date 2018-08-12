@@ -23,6 +23,20 @@ function scrollToBottom() {
 }
 
 socket.on('connect', function ()  {
+
+    var params = $.deparam(window.location.search);
+    socket.emit('join', 
+       params,
+       function(err) {
+            if (err){
+                alert(err);
+                window.location.href = '/';//devolve o usuario para a pagina inicial
+            } else {
+                console.log("No error");
+            }
+        }
+    );
+
     console.log('conectado ao servidor');
 
     socket.emit('createEmail', {
@@ -37,6 +51,17 @@ socket.on('connect', function ()  {
 
 socket.on('disconnect', function () {
     console.log('desconectado');
+});
+
+socket.on('updateUserList', function (users) {
+  var ol = $('<ol></ol>');
+  
+  users.forEach(function(user) {
+      console.log(user);
+    ol.append($('<li></li>').text(user));
+  });
+
+  $('#users').html(ol);
 });
 
 socket.on('newMessage', function (msg) {
@@ -95,7 +120,6 @@ jQuery('#message-form').on('submit', function (e) {
     e.preventDefault();//impede o default do botao de recarrregar a pagina
 
     socket.emit('createMessage', {
-        from: 'User',
         text: messageTextBox.val()
     }, function () {
         messageTextBox.val('')
